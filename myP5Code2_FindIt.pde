@@ -1,6 +1,7 @@
+// ARRAYS 
 var starXPos = [];
 var starYPos = [];
-var star = "⭐️";
+var star = "⭐";
 var starTotal = 100;
 
 var planetXPos = [];
@@ -9,79 +10,105 @@ var planet = "🪐";
 var planetTotal = 3;
 var planetFound = 0;
 
+// ANIMATION VARIABLE 
+var glow = 0;
+
 setup = function() {
-   size(600, 450); 
+    size(600, 450);
+    reset();
+};
 
-   reset();
-}
+draw = function() {
 
-draw = function(){   
-
-   if(keyPressed){
-    if(key == 'r'){
-      reset();
+    // KEY PRESSED FEATURE 
+    if (keyPressed) {
+        if (key == 'r') {
+            reset();
+        }
     }
-   }
 
-  display();
-}
+    display();
 
+    // SIMPLE ANIMATION 
+    glow += 1;
+};
 
-mouseClicked = function(){
-  check(mouseX, mouseY);
-}
+// MOUSE CLICKED FEATURE
+mouseClicked = function() {
+    check(mouseX, mouseY);
+};
 
-var check = function(xClick, yClick){
-  for(var i = 0; i < planetXPos.length; i++){
-    if(dist(xClick - 5, yClick - 5, planetXPos[i], planetYPos[i])<15){
-      planetXPos.splice(i, 1);
-      planetYPos.splice(i, 1);
-      planetFound++;
+// FUNCTION TO CHECK IF PLANET IS CLICKED
+var check = function(xClick, yClick) {
+
+    // FOR LOOP 
+    for (var i = 0; i < planetXPos.length; i++) {
+
+        if (dist(xClick, yClick, planetXPos[i], planetYPos[i]) < 20) {
+            planetXPos.splice(i, 1);
+            planetYPos.splice(i, 1);
+            planetFound++;
+        }
     }
-  }
-}
+};
 
-var display = function(){
-  background(100,100,100);
+// DISPLAY EVERYTHING
+var display = function() {
+    background(100, 100, 120);
 
-  fill(200,200,0);
-  textSize(20);
+    fill(255, 255, 0);
+    textSize(20);
 
-  for(var i = 0; i < planetXPos.length; i ++){
-    text(planet, planetXPos[i], planetYPos[i]);
-  }
+    // DRAW PLANETS
+    for (var i = 0; i < planetXPos.length; i++) {
+        text(planet, planetXPos[i], planetYPos[i]);
+    }
 
-  for(var i = 0; i < starXPos.length; i ++){
-    text(star, starXPos[i], starYPos[i]);
-  }
+    // DRAW STARS
+    for (var i = 0; i < starXPos.length; i++) {
+        text(star, starXPos[i], starYPos[i]);
+    }
 
-  fill(0,0,0);
-  rect(0,400,600,50);
-  fill(255,255,255);
-  text("Find The " + planet + "s   |   " + planet + " " + planetFound + "/" + planetTotal, 0, 425);
+    // BOTTOM BAR
+    fill(0, 0, 0);
+    rect(0, 400, 600, 50);
 
-  if(planetFound == planetTotal){
-    fill(0, 200, 200);
-    textSize(50);
-    text("Press 'r' to restart \nthe game", 50, 200);
-  }
-}
+    fill(255, 255, 255);
+    text("Find the " + planet + "s!", 20, 430);
 
-var reset = function(){
-  starXPos = [];
-  starYPos = [];
-  planetXPos = [];
-  planetYPos = [];
-  planetFound = 0;
+    // WIN SCREEN
+    if (planetFound === planetTotal) {
+        fill(0, 255, 200);
+        textSize(40);
+        text("YOU WIN!", 180, 200);
+            textSize(20);
+        text("Press 'r' to restart", 200, 240);
+    }
+};
+
+// RESET GAME
+var reset = function() {
+
+    starXPos = [];
+    starYPos = [];
+    planetXPos = [];
+    planetYPos = [];
+    planetFound = 0;
+
+    // FOR LOOP 
+    for (var i = 0; i < starTotal; i++) {
+        starXPos.push(random(0, 600));
+        starYPos.push(random(0, 400));
+    }
+
+    // WHILE LOOP 
+    var i = 0;
+    while (i < planetTotal) {
+        planetXPos.push(random(0, 600));
+        planetYPos.push(random(0, 400));
+        i++;
+    }
+};
 
 
-  for(var i = 0; i < starTotal; i++){
-    starXPos.push(random(0,600));
-    starYPos.push(random(0,400));
-  }
 
-  for(var i = 0; i < planetTotal; i++){
-    planetXPos.push(random(0,600));
-    planetYPos.push(random(0,400));
-  }
-}
